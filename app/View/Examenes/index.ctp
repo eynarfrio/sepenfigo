@@ -27,6 +27,7 @@
                             <td>
                                 <a href="javascript:" class="btn btn-info" onclick="cargarmodal('<?php echo $this->Html->url(array('action' => 'edit',$exa['Examene']['id']));?>');"><i class="glyphicon glyphicon-edit icon-white"></i>Editar</a>
                                   <a href="javascript:" class="btn btn-danger" onclick="if(confirm('Esta seguro de eliminar <?php echo $exa['Examene']['nombre']?>??')){window.location = '<?php echo $this->Html->url(array('action' => 'delete',$exa['Examene']['id']));?>';}"><i class="glyphicon glyphicon-edit icon-white"></i>Eliminar</a>
+                                  <a href="javascript:" class="btn btn-success" onclick="cargarmodal('<?php echo $this->Html->url(array('controller'=>'Resultados', 'action'=>'ajax_resultados'));?>');"><i class="glyphicon glyphicon-zoom-in icon-white"></i>Resultados</a>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -36,4 +37,26 @@
         </div>
     </div>
 </div>
+<script>
+  function examenes_resultados(idresultado)
+  {
+      $.modal({
+          content: '<div id="idmodal"></div>',
+          title: 'RESULTADOS EXAMENES',
+          width: 600,
+          height: 400,
+          actions: {
+              'Close': {
+                  color: 'red',
+                  click: function (win) {
+                      win.closeModal();
+                  }
+              }
+          },
+          buttonsLowPadding: true
+      });
+      $('#idmodal').load('<?php echo $this->Html->url(array('controller' => 'Resultados', 'action' => 'ajax_resultados')); ?>/' + idresultado);
+  }
+
+</script>
 
