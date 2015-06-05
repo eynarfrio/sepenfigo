@@ -15,8 +15,16 @@
     <div class="form-group">
         <div class="row">
             <div class="col-sm-12">
+                <label class="control-label">Tipo</label>
+                <?php echo $this->Form->select('tipo', array('Agudo' => 'Agudo', 'Cronico' => 'Cronico'), array('class' => 'form-control', 'required')); ?>         
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-12">
                 <label class="control-label">Descripcion</label>
-                <?php echo $this->Form->text('descripcion', array('class'=>'form-control','required'));?>
+                <?php echo $this->Form->text('descripcion', array('class'=>'form-control'));?>
             </div>
         </div>
     </div>

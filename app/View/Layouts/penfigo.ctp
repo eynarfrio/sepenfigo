@@ -62,7 +62,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html"> <img alt="Charisma Logo" src="<?php echo $this->webroot;?>img/logo20.png" class="hidden-xs"/>
+                <a class="navbar-brand" href="index.html"> <img alt="Charisma Logo" src="<?php echo $this->webroot; ?>img/logo20.png" class="hidden-xs"/>
                     <span>Penfigo</span></a>
 
                 <!-- user dropdown starts -->
@@ -119,7 +119,13 @@
 
 
             <hr>
-
+            <style>
+                .modal .modal-body {
+                    max-height: 400px;
+                    overflow-y: auto;
+                    overflow-x: hidden;
+                }
+            </style>
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
                  aria-hidden="true">
 
@@ -197,6 +203,14 @@
                   }
               });
 
+          }
+          function mensaje_noty(texto, vlayout, vtype) {
+              var options = {
+                  text: texto,
+                  layout: vlayout,
+                  type: vtype
+              };
+              noty(options);
           }
         </script>
     </body>

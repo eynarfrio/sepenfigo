@@ -14,6 +14,7 @@
                         <tr>
                             <th>Id</th>
                             <th>Nombre</th>
+                            <th>Tipo</th>
                             <th>Descripcion</th>
                             <th>Acciones</th>
                         </tr>
@@ -23,6 +24,7 @@
                         <tr>
                             <td><?php echo $reg['Regione']['id']?></td>
                             <td><?php echo $reg['Regione']['nombre']?></td>
+                            <td><?php echo $reg['Regione']['tipo']?></td>
                             <td><?php echo $reg['Regione']['descripcion']?></td>
                             <td>
                                 <a href="javascript:" class="btn btn-info" onclick="cargarmodal('<?php echo $this->Html->url(array('action' => 'edit',$reg['Regione']['id']));?>');"><i class="glyphicon glyphicon-edit icon-white"></i>Editar</a>

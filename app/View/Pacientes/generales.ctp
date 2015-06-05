@@ -33,11 +33,15 @@
                 <?php $i++;?>
                 <?php endforeach;?>
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="control-label">&nbsp;</label>
-                        <?php echo $this->Html->link('Volver a datos del paciente',array('controller' => 'Pacientes','action' => 'paciente',$paciente['Paciente']['id']),array('class' => 'btn btn-warning col-md-12'));?>
+                        <?php echo $this->Html->link('Volver',$this->request->referer(),array('class' => 'btn btn-info col-md-12'));?>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
+                        <label class="control-label">&nbsp;</label>
+                        <?php echo $this->Html->link('Editar a datos del paciente',array('controller' => 'Pacientes','action' => 'paciente',$paciente['Paciente']['id']),array('class' => 'btn btn-warning col-md-12'));?>
+                    </div>
+                    <div class="col-md-4">
                         <label class="control-label">&nbsp;</label>
                         <?php echo $this->Form->submit('Registrar',array('class' => 'btn btn-success col-md-12'));?>
                     </div>

@@ -1,23 +1,22 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal">×</button>
-    <h3>Resultados <small><?php echo $examen['Examene']['nombre']; ?></small></h3>
+    <h3>Observaciones <small><?php echo $dat_pac_sin['Sintoma']['nombre']; ?></small></h3>
 </div>
 
 
 <div class="modal-body">
     <div class="form-group">
-        <?php echo $this->Form->create('Resultado', array('action' => 'registra_resultado', 'id' => 'form_resultado')); ?>
+        <?php echo $this->Form->create('Paciente', array('action' => 'registra_obs', 'id' => 'form_obs')); ?>
         <div class="row">
-            <div class="col-sm-12">
-                <label class="control-label">Descripcion</label>
-                <?php echo $this->Form->hidden('examene_id', array('value' => $idExamen)); ?>
-                <?php echo $this->Form->text('descripcion', array('class' => 'form-control', 'required', 'placeholder' => 'Ingrese la descripcion del examen')); ?>         
+            <div class="col-md-4">
+                <label class="control-label">Descripcion</label>        
             </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12">
-                <label class="control-label">&nbsp;</label>
-                <button class="btn btn-info col-md-12" type="button" onclick="registra_resultado();">REGISTRAR</button>    
+            <div class="col-md-4">
+                <?php echo $this->Form->hidden("PacientesSintomasObservacione.pasientessintoma_id", array('value' => $idPacSin)) ?>
+                <?php echo $this->Form->select("PacientesSintomasObservacione.observacione_id", $observaciones, array('class' => 'form-control', 'required')) ?>
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-info col-md-12" type="submit">REGISTRAR</button>
             </div>
         </div>
         <?php echo $this->Form->end(); ?>
@@ -32,11 +31,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($resultados as $re): ?>
+                        <?php foreach ($observaciones_pa as $ob): ?>
                           <tr>
-                              <td><?php echo $re['Resultado']['descripcion'] ?></td>
+                              <td><?php echo $ob['Observacione']['descripcion'] ?></td>
                               <td>
-                                  <a class="label-default label label-danger" href="javascript:" onclick="quita_resultado(<?php echo $re['Resultado']['id']; ?>)">Retirar</a>
+                                  <a class="label-default label label-danger" href="javascript:" onclick="quita_obs(<?php echo $ob['PacientesSintomasObservacione']['id']; ?>)">Retirar</a>
                               </td>
                           </tr>
                         <?php endforeach; ?>
@@ -48,10 +47,10 @@
 </div>
 
 <script>
-
-  function registra_resultado() {
-      var postData = $('#form_resultado').serializeArray();
-      var formURL = $('#form_resultado').attr("action");
+  $("#form_obs").submit(function (e)
+  {
+      var postData = $('#form_obs').serializeArray();
+      var formURL = $('#form_obs').attr("action");
       $.ajax(
               {
                   url: formURL,
@@ -59,10 +58,10 @@
                   data: postData,
                   /*beforeSend:function (XMLHttpRequest) {
                    alert("antes de enviar");
-                   },
-                   complete:function (XMLHttpRequest, textStatus) {
-                   alert('despues de enviar');
                    },*/
+                  complete: function (XMLHttpRequest, textStatus) {
+                      $('#divmodalcont').load('<?php echo $this->Html->url(array('controller' => 'Pacientes', 'action' => 'observaciones', $idPacSin, $tipo)); ?>');
+                  },
                   success: function (data, textStatus, jqXHR)
                   {
                       if ($.parseJSON(data).correcto != '') {
@@ -70,8 +69,6 @@
                       } else {
                           mensaje_noty("Error!!, No se registro el resultado!!!", 'topRight', 'error');
                       }
-
-                      $('#divmodalcont').load('<?php echo $this->Html->url(array('controller' => 'Resultados', 'action' => 'ajax_resultados', $idExamen)); ?>');
                       //data: return data from server
                       //$("#parte").html(data);
                   },
@@ -81,17 +78,19 @@
                       alert("error");
                   }
               });
-  }
-  function quita_resultado(idresultado) {
+      e.preventDefault();
+  });
+
+  function quita_obs(id) {
       if (confirm('Esta seguro de quitar el resultado??')) {
 
-          $("#divmodalcont").load("<?php echo $this->Html->url(array('controller' => 'Resultados', 'action' => 'quita_resultado')); ?>/" + idresultado, function (responseTxt, statusTxt, xhr) {
+          $("#divmodalcont").load("<?php echo $this->Html->url(array('controller' => 'Pacientes', 'action' => 'quita_obs')); ?>/" + id, function (responseTxt, statusTxt, xhr) {
               if ($.parseJSON(responseTxt).correcto != '') {
                   mensaje_noty($.parseJSON(responseTxt).correcto, 'topRight', 'success');
               } else {
                   mensaje_noty("Error!!, No se quito el resultado!!!", 'topRight', 'error');
               }
-              $('#divmodalcont').load('<?php echo $this->Html->url(array('controller' => 'Resultados', 'action' => 'ajax_resultados', $idExamen)); ?>');
+              $('#divmodalcont').load('<?php echo $this->Html->url(array('controller' => 'Pacientes', 'action' => 'observaciones', $idPacSin, $tipo)); ?>');
               if (statusTxt == "error")
                   alert("Error: " + xhr.status + ": " + xhr.statusText);
           });

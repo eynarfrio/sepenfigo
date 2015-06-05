@@ -25,7 +25,7 @@
                               <td><?php echo $pa['Paciente']['ci']; ?></td>
                               <td><?php echo $pa['Paciente']['ambos_telefonos']; ?></td>
                               <td>
-                                  
+                                  <a href="<?php echo $this->Html->url(array('action' => 'verpaciente', $pa['Paciente']['id'])); ?>" class="btn btn-info"><i class="glyphicon glyphicon-eye-open icon-white"></i> Ver</a>
                               </td>
                           </tr>
                         <?php endforeach; ?>
