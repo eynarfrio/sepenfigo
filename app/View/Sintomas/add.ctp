@@ -27,7 +27,7 @@
 
 </div>
 <div class="modal-footer">
-    <a href="javascript:" class="btn btn-default" data-dismiss="modal">Cerrar</a>
+    <a href="javascript:" class="btn btn-default" data-dismiss="modal">Close</a>
     <button class="btn btn-primary" type="submit">Registrar</button>
 </div>
 <?php echo $this->Form->end(); ?>

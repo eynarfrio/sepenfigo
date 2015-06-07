@@ -2,7 +2,7 @@
     <div class="box col-md-12">
         <div class="box-inner">
             <div class="box-header well" data-original-title="">
-                <h2><i class="glyphicon glyphicon-edit"></i> Sintomas del paciente <?php echo $paciente['Paciente']['nombre_completo'] ?> en fecha (<?php echo date('d-m-Y')?>)</h2>
+                <h2><i class="glyphicon glyphicon-edit"></i> Sintomas del paciente <?php echo $paciente['Paciente']['nombre_completo'] ?> en fecha (<?php echo date('d-m-Y') ?>)</h2>
             </div>
             <div class="box-content">
 
@@ -18,17 +18,18 @@
                     </thead>
                     <tbody>
                         <?php foreach ($regiones as $re): ?>
-                        <?php $idReg = $re['Regione']['id'];?>
+                          <?php $idReg = $re['Regione']['id']; ?>
                           <tr>
                               <td><?php echo $re['Regione']['nombre'] ?></td>
                               <td>
                                   <?php foreach ($sintomas as $sin): ?>
-                                  <?php $idSin = $sin['Sintoma']['id'];?>
+                                    <?php $idSin = $sin['Sintoma']['id']; ?>
                                     <div class="checkbox">
                                         <label>
-                                            <?php echo $this->Form->hidden("Sintoma.$idReg.sintoma_id.$idSin.id")?>
-                                            <?php echo $this->Form->checkbox("Sintoma.$idReg.sintoma_id.$idSin.valor")?>
-                                            <?php echo $sin['Sintoma']['nombre']." (".$sin['Sintoma']['tipo'].")";?>
+                                            <?php echo $this->Form->hidden("Sintoma.$idReg.sintoma_id.$idSin.id") ?>
+                                            <?php echo $this->Form->hidden("Sintoma.$idReg.sintoma_id.$idSin.created", array('value' => $fecha)) ?>
+                                            <?php echo $this->Form->checkbox("Sintoma.$idReg.sintoma_id.$idSin.valor") ?>
+                                            <?php echo $sin['Sintoma']['nombre'] . " (" . $sin['Sintoma']['tipo'] . ")"; ?>
                                         </label>
                                     </div>
                                   <?php endforeach; ?>

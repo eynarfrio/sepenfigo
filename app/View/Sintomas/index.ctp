@@ -2,7 +2,7 @@
     <div class="box col-md-12">
         <div class="box-inner">
             <div class="box-header well" data-original-title="">
-                <h2><i class="glyphicon glyphicon-ok"></i>Sintomas</h2>
+                <h2><i class="glyphicon glyphicon-user"></i>Sintomas</h2>
 
                 <div class="box-icon">
                     <a href="javascript:" onclick="cargarmodal('<?php echo $this->Html->url(array('action' => 'add')); ?>');" class="btn btn-round btn-default"><i class="glyphicon glyphicon-plus"></i></a>
