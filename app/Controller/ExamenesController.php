@@ -2,7 +2,7 @@
 
 class ExamenesController extends AppController {
 
-    public $uses = array('Examene');
+    public $uses = array('Examene','Penfigo','PenfigosResultado','Resultado');
 
     public function index() {
         $examenes = $this->Examene->find('all');
@@ -52,5 +52,10 @@ class ExamenesController extends AppController {
             $this->Session->setFlash('no se pudo eliminar.','msgerror');
         }
         $this->redirect(array('action' => 'index'));
-    } 
+    }
+    public function penfigos($idResultado = null){
+      $resultado = $this->Resultado->findByid($idResultado,null,null,-1);
+      $penfigos = $this->Penfigo->find('list',array('fields' => 'Penfigo.nombre'));
+      $this->set(compact('penfigos','resultado'));
+    }
 }
