@@ -95,29 +95,37 @@ class PacientesController extends AppController {
       'group' => array('DATE(PacientesSintoma.created)'),
       'fields' => array('DATE(PacientesSintoma.created) as fecha')
     ));
-    $num_t_agudo = $this->Regione->find('count',array(
+    $num_t_agudo = $this->Regione->find('count', array(
       'recursive' => -1,
       'conditions' => array('Regione.tipo' => 'Agudo')
     ));
     //debug($num_t_agudo);exit;
-    $num_t_cronico = $this->Regione->find('count',array(
+    $num_t_cronico = $this->Regione->find('count', array(
       'recursive' => -1,
       'conditions' => array('Regione.tipo' => 'Cronico')
     ));
-    $this->set(compact('paciente', 'idPaciente', 'pas_sint', 'res_sint', 'num_sintomas', 'datos_fecha','num_t_agudo','num_t_cronico'));
+    $this->set(compact('paciente', 'idPaciente', 'pas_sint', 'res_sint', 'num_sintomas', 'datos_fecha', 'num_t_agudo', 'num_t_cronico'));
   }
 
   public function get_agu_cro($idPaciente = null, $fecha = null, $tipo = null) {
-    $num_agu_cro = $this->PacientesSintoma->find('count', array(
+    $sintomas_reg = $this->PacientesSintoma->find('all', array(
       'recursive' => 0,
       'conditions' => array(
         'PacientesSintoma.paciente_id' => $idPaciente,
         'DATE(PacientesSintoma.created)' => $fecha,
         'Regione.tipo' => $tipo
       ),
-      'group' => array('Regione.tipo')
+      'group' => array('PacientesSintoma.regione_id'),
+      'fields' => array('count(*) as numero_sin')
     ));
-    return $num_agu_cro;
+    $num_sintomas = $this->Sintoma->find('count');
+    $contador = 0;
+    foreach ($sintomas_reg as $sin) {
+      if((($sin[0]['numero_sin']/$num_sintomas)*100) >= 51){
+        $contador++;
+      }
+    }
+    return $contador;
   }
 
   public function get_nombre_usr($idUser = NULL) {
@@ -177,7 +185,7 @@ class PacientesController extends AppController {
     $this->request->data = $edita;
     /* debug($pac_sin);
       exit; */
-    $this->set(compact('regiones', 'paciente', 'idPaciente', 'sintomas'));
+    $this->set(compact('regiones', 'paciente', 'idPaciente', 'sintomas','fecha'));
   }
 
   public function registra_sintomas($idPaciente = null) {
@@ -190,6 +198,7 @@ class PacientesController extends AppController {
       foreach ($da['sintoma_id'] as $idSin => $sin) {
         if ($sin['valor'] == 1) {
           $pac_sin['id'] = $sin['id'];
+          $pac_sin['created'] = $sin['created'];
           $pac_sin['sintoma_id'] = $idSin;
           $pac_sin['regione_id'] = $idReg;
           $this->PacientesSintoma->create();
@@ -267,15 +276,17 @@ class PacientesController extends AppController {
   public function elimina_sintomas($idPaciente = null, $fecha = null) {
     $this->PacientesSintoma->deleteAll(array(
       'PacientesSintoma.paciente_id' => $idPaciente,
-      'PacientesSintoma.DATE(PacientesSintoma.created)' => $fecha,
+      'DATE(PacientesSintoma.created)' => $fecha,
       'PacientesSintoma.diagnostico_id' => NULL
     ));
     $this->Session->setFlash("Se elimino correctamente los sintomas de fecha " . $fecha, 'msgbueno');
     $this->redirect(array('action' => 'verpaciente', $idPaciente));
   }
-  public function examen($idPaciente = null,$fecha = null){
+
+  public function examen($idPaciente = null, $fecha = null) {
     $this->layout = 'ajax';
     debug($idPaciente);
     exit;
   }
+
 }
