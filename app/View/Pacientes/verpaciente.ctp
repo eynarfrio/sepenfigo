@@ -13,7 +13,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-4">
-                        <b>Edad: </b> <?php //echo $paciente['Paciente']['edad']                    ?>20
+                        <b>Edad: </b> <?php //echo $paciente['Paciente']['edad']                     ?>20
                     </div>
                     <div class="col-md-4">
                         <b>Fecha de nacimiento: </b> <?php echo $paciente['Paciente']['fecha_nac'] ?>
@@ -206,7 +206,8 @@
                                   ?>
                               </td>
                               <td>
-                                  <a href="javascript:" class="label label-success" onclick="cargarmodal('<?php echo $this->Html->url(array('action' => 'examen', $idPaciente, $dfe[0]['fecha'])); ?>')">Examen</a>
+                                  <a href="<?php echo $this->Html->url(array('action' => 'examenes', $idPaciente, $dfe[0]['fecha'])); ?>" class="label label-success">Examenes</a> 
+                                  <a href="<?php echo $this->Html->url(array('action' => 'diagnosticar', $idPaciente, $dfe[0]['fecha'])); ?>" class="label label-warning">Diagnosticar</a>
                               </td>
                           </tr>
                         <?php endforeach; ?>

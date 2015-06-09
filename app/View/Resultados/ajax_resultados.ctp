@@ -36,6 +36,7 @@
                           <tr>
                               <td><?php echo $re['Resultado']['descripcion'] ?></td>
                               <td>
+                                  <a class="label-default label label-success" href="javascript:" onclick="penfigos(<?php echo $re['Resultado']['id']; ?>)">penfigos</a>
                                   <a class="label-default label label-danger" href="javascript:" onclick="quita_resultado(<?php echo $re['Resultado']['id']; ?>)">Retirar</a>
                               </td>
                           </tr>
@@ -96,6 +97,9 @@
                   alert("Error: " + xhr.status + ": " + xhr.statusText);
           });
       }
+  }
+  function penfigos(idresultado){
+    $('#divmodalcont').load('<?php echo $this->Html->url(array('controller' => 'Examenes','action' => 'penfigos'));?>/'+idresultado);
   }
 
 </script>

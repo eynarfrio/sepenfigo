@@ -32,8 +32,8 @@ class ExameneFixture extends CakeTestFixture {
 			'id' => 1,
 			'nombre' => 'Lorem ipsum dolor sit amet',
 			'tipo' => 'Lorem ipsum dolor sit amet',
-			'created' => '2015-05-28 09:44:57',
-			'modified' => '2015-05-28 09:44:57'
+			'created' => '2015-06-09 12:45:51',
+			'modified' => '2015-06-09 12:45:51'
 		),
 	);
 

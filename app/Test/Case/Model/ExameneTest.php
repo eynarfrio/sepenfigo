@@ -14,7 +14,7 @@ class ExameneTest extends CakeTestCase {
  */
 	public $fixtures = array(
 		'app.examene',
-		'app.paciente',
+		'app.resultado',
 		'app.examenes_paciente'
 	);
 

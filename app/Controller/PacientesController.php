@@ -13,7 +13,9 @@ class PacientesController extends AppController {
     'Sintoma',
     'PacientesSintoma',
     'PacientesSintomasObservacione',
-    'Observacione'
+    'Observacione',
+    'Examene',
+    'ResultadosPaciente'
   );
   var $components = array('RequestHandler');
 
@@ -121,7 +123,7 @@ class PacientesController extends AppController {
     $num_sintomas = $this->Sintoma->find('count');
     $contador = 0;
     foreach ($sintomas_reg as $sin) {
-      if((($sin[0]['numero_sin']/$num_sintomas)*100) >= 51){
+      if ((($sin[0]['numero_sin'] / $num_sintomas) * 100) >= 51) {
         $contador++;
       }
     }
@@ -185,7 +187,7 @@ class PacientesController extends AppController {
     $this->request->data = $edita;
     /* debug($pac_sin);
       exit; */
-    $this->set(compact('regiones', 'paciente', 'idPaciente', 'sintomas','fecha'));
+    $this->set(compact('regiones', 'paciente', 'idPaciente', 'sintomas', 'fecha'));
   }
 
   public function registra_sintomas($idPaciente = null) {
@@ -283,10 +285,58 @@ class PacientesController extends AppController {
     $this->redirect(array('action' => 'verpaciente', $idPaciente));
   }
 
-  public function examen($idPaciente = null, $fecha = null) {
-    $this->layout = 'ajax';
-    debug($idPaciente);
-    exit;
+  public function examenes($idPaciente = null, $fecha = null) {
+    $paciente = $this->Paciente->find('first', array(
+      'conditions' => array('Paciente.id' => $idPaciente),
+      'fields' => array('Paciente.id', 'Paciente.nombre_completo')
+    ));
+    $examenes = $this->Examene->find('all', array('recursive' => 1));
+    
+    $edita['Resultado'] = array();
+    foreach ($examenes as $ex) {
+      foreach ($ex['Resultado'] as $re) {
+        $pac_res = $this->ResultadosPaciente->find('first', array(
+          'recursive' => -1,
+          'conditions' => array('ResultadosPaciente.paciente_id' => $idPaciente, 'ResultadosPaciente.resultado_id' => $re['id'], 'ResultadosPaciente.fecha' => $fecha)
+        ));
+        if (!empty($pac_res)) {
+          $edita['Resultado'][$ex['Examene']['id']]['resultado_id'][$re['id']]['tiene'] = 1;
+          $edita['Resultado'][$ex['Examene']['id']]['resultado_id'][$re['id']]['valor'] = $pac_res['ResultadosPaciente']['valor'];
+          $edita['Resultado'][$ex['Examene']['id']]['resultado_id'][$re['id']]['id'] = $pac_res['ResultadosPaciente']['id'];
+        }
+      }
+    }
+    $this->request->data = $edita;
+    $this->set(compact('paciente', 'examenes', 'fecha'));
+  }
+
+  public function registra_examenes($idPaciente = null) {
+    /* debug($this->request->data);
+      exit; */
+    $idUser = $this->Session->read('Auth.User.id');
+    $datos = $this->request->data;
+    foreach ($datos['Resultado'] as $ex) {
+      foreach ($ex['resultado_id'] as $idRes => $re) {
+        if ($re['tiene'] == 1) {
+          $pac_res['id'] = $re['id'];
+          $pac_res['fecha'] = $re['fecha'];
+          $pac_res['resultado_id'] = $idRes;
+          $pac_res['paciente_id'] = $idPaciente;
+          if (!empty($re['valor'])) {
+            $pac_res['valor'] = $re['valor'];
+          }
+          $pac_res['user_id'] = $idUser;
+          $this->ResultadosPaciente->create();
+          $this->ResultadosPaciente->save($pac_res);
+        } else {
+          if (!empty($re['id'])) {
+            $this->ResultadosPaciente->delete($re['id']);
+          }
+        }
+      }
+    }
+    $this->Session->setFlash("Se registro correctamente los examenes!!", 'msgbueno');
+    $this->redirect(array('action' => 'verpaciente', $idPaciente));
   }
 
 }
