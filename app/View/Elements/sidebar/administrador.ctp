@@ -16,4 +16,22 @@
             <li><a href="<?php echo $this->Html->url(array('controller' => 'Regiones', 'action' => 'index')); ?>">Regiones</a></li>
         </ul>
     </li>
+    <li class="accordion">
+        <a href="javascript:"><i class="glyphicon glyphicon-folder-open"></i><span> Tratamientos</span></a>
+        <ul class="nav nav-pills nav-stacked">
+            <li><a href="<?php echo $this->Html->url(array('controller' => 'Tratamientos', 'action' => 'index')); ?>">Listado de tratamientos</a></li>
+        </ul>
+    </li>
+    <li class="accordion">
+        <a href="javascript:"><i class="glyphicon glyphicon-tasks"></i><span> Sintomas</span></a>
+        <ul class="nav nav-pills nav-stacked">
+            <li><a href="<?php echo $this->Html->url(array('controller' => 'Sintomas', 'action' => 'index')); ?>">Listado de sintomas</a></li>
+        </ul>
+    </li>
+    <li class="accordion">
+        <a href="javascript:"><i class="glyphicon glyphicon-zoom-in"></i><span> Observaciones</span></a>
+        <ul class="nav nav-pills nav-stacked">
+            <li><a href="<?php echo $this->Html->url(array('controller' => 'Observaciones', 'action' => 'index')); ?>">Listado de sintomas</a></li>
+        </ul>
+    </li>
 </ul>

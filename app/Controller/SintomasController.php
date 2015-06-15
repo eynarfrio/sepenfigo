@@ -2,7 +2,6 @@
 
 class SintomasController extends AppController {
 
-
     public $uses = array('Sintoma');
 
     public function index() {
@@ -56,4 +55,3 @@ class SintomasController extends AppController {
     }
 
 }
-
